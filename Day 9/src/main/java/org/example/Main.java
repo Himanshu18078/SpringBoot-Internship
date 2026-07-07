@@ -1,17 +1,31 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+public class Main {
+
+    public static void main(String[] args) {
+
+        try {
+            Configuration cfg = new Configuration();
+            cfg.configure("hibernate.cfg.xml");
+            SessionFactory sessionFactory = cfg.buildSessionFactory();
+            System.out.println("Hibernate configured successfully!");
+
+            Session session =  sessionFactory.openSession();
+            Transaction t = session.beginTransaction();
+            Student s = new Student();
+            s.setId(200);
+            s.setName("Himanshu");
+            session.save(s);
+            t.commit();
+            System.out.println("Successfully Inserted");
+            sessionFactory.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
